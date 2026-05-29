@@ -210,10 +210,20 @@ def edit_listing(request, listing_id):
 
 @login_required
 def matches_dashboard(request):
-    matches = Match.objects.filter(
+    match_qs = Match.objects.filter(
         Q(listing__posted_by=request.user) | Q(searcher=request.user),
         status='ACCEPTED',
-    ).select_related('listing', 'searcher', 'searcher__profile', 'listing__posted_by', 'listing__posted_by__profile').distinct()
+    ).select_related('listing', 'searcher', 'searcher__profile', 'listing__posted_by', 'listing__posted_by__profile').distinct().order_by('-created_at')
+    
+    matches = list(match_qs)
+    for match in matches:
+        if match.searcher == request.user:
+            match.other_user = match.listing.posted_by
+            match.whatsapp_msg = f"Hi, I found your listing '{match.listing.title}' on FlatsNFlatmates App"
+        else:
+            match.other_user = match.searcher
+            match.whatsapp_msg = f"Hi, I found your profile on FlatsNFlatmates App"
+
     return render(request, 'matches.html', {'matches': matches})
 
 

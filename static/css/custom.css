@@ -178,3 +178,8 @@ button:focus-visible {
 .whatsapp-btn:hover::after {
   transform: translateX(100%);
 }
+
+.reveal-anim {
+  transform: scale(0.97);
+  opacity: 0.5;
+}

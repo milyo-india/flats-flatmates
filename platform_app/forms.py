@@ -60,6 +60,9 @@ class UserProfileForm(forms.ModelForm):
             'profile_picture', 'age', 'bio', 'gender',
             'diet', 'schedule', 'pets', 'smoking', 'phone_number',
         ]
+        help_texts = {
+            'phone_number': 'WhatsApp number suggested',
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

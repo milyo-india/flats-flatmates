@@ -18,11 +18,11 @@
 
       <!-- Profile Image -->
       <div class="relative aspect-square overflow-hidden">
-        <img src="{{ match.searcher.profile.profile_picture_url }}" alt="{{ match.searcher.get_full_name }}" class="w-full h-full object-cover">
+        <img src="{{ match.other_user.profile.profile_picture_url }}" alt="{{ match.other_user.get_full_name }}" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
 
         <!-- Verified badge -->
-        {% if match.searcher.profile.is_verified %}
+        {% if match.other_user.profile.is_verified %}
         <div class="absolute top-3 right-3">
           <span class="px-2.5 py-1 bg-success-600/90 backdrop-blur-sm rounded-lg text-xs font-semibold text-white flex items-center gap-1 shadow-sm">
             <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.403 12.652a3 3 0 010-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.06l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>
@@ -33,29 +33,29 @@
 
         <!-- Name overlay on image -->
         <div class="absolute bottom-3 left-3 right-3">
-          <h3 class="text-white font-display font-bold text-lg">{{ match.searcher.get_full_name }}</h3>
-          <p class="text-white/80 text-sm">{{ match.searcher.profile.age }} yrs · {{ match.searcher.profile.get_gender_display }}</p>
+          <h3 class="text-white font-display font-bold text-lg">{{ match.other_user.get_full_name }}</h3>
+          <p class="text-white/80 text-sm">{{ match.other_user.profile.age }} yrs · {{ match.other_user.profile.get_gender_display }}</p>
         </div>
       </div>
 
       <!-- Card Content -->
       <div class="p-5">
         <!-- Bio -->
-        <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ match.searcher.profile.bio|truncatechars:100 }}</p>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ match.other_user.profile.bio|truncatechars:100 }}</p>
 
         <!-- Lifestyle chips -->
         <div class="flex flex-wrap gap-1.5 mb-4">
-          {% if match.searcher.profile.diet %}
-          <span class="lifestyle-chip">{% if match.searcher.profile.diet == 'veg' %}🟢{% elif match.searcher.profile.diet == 'vegan' %}🌱{% else %}🍖{% endif %} {{ match.searcher.profile.get_diet_display }}</span>
+          {% if match.other_user.profile.diet %}
+          <span class="lifestyle-chip">{% if match.other_user.profile.diet == 'veg' %}🟢{% elif match.other_user.profile.diet == 'vegan' %}🌱{% else %}🍖{% endif %} {{ match.other_user.profile.get_diet_display }}</span>
           {% endif %}
-          {% if match.searcher.profile.schedule %}
-          <span class="lifestyle-chip">{% if match.searcher.profile.schedule == 'early_bird' %}🌅{% else %}🦉{% endif %} {{ match.searcher.profile.get_schedule_display }}</span>
+          {% if match.other_user.profile.schedule %}
+          <span class="lifestyle-chip">{% if match.other_user.profile.schedule == 'early_bird' %}🌅{% else %}🦉{% endif %} {{ match.other_user.profile.get_schedule_display }}</span>
           {% endif %}
-          {% if match.searcher.profile.pets %}
-          <span class="lifestyle-chip">{% if match.searcher.profile.pets == 'has_pets' %}🐾{% elif match.searcher.profile.pets == 'pet_friendly' %}🐶{% else %}🚫{% endif %} {{ match.searcher.profile.get_pets_display }}</span>
+          {% if match.other_user.profile.pets %}
+          <span class="lifestyle-chip">{% if match.other_user.profile.pets == 'has_pets' %}🐾{% elif match.other_user.profile.pets == 'pet_friendly' %}🐶{% else %}🚫{% endif %} {{ match.other_user.profile.get_pets_display }}</span>
           {% endif %}
-          {% if match.searcher.profile.smoking %}
-          <span class="lifestyle-chip">{% if match.searcher.profile.smoking == 'non_smoker' %}🚭{% elif match.searcher.profile.smoking == 'smoker' %}🚬{% else %}💨{% endif %} {{ match.searcher.profile.get_smoking_display }}</span>
+          {% if match.other_user.profile.smoking %}
+          <span class="lifestyle-chip">{% if match.other_user.profile.smoking == 'non_smoker' %}🚭{% elif match.other_user.profile.smoking == 'smoker' %}🚬{% else %}💨{% endif %} {{ match.other_user.profile.get_smoking_display }}</span>
           {% endif %}
         </div>
 
@@ -68,11 +68,23 @@
         </div>
 
         <!-- WhatsApp button -->
-        <a href="https://wa.me/91{{ match.searcher.profile.phone_number }}" target="_blank" rel="noopener noreferrer"
+        <a href="https://wa.me/91{{ match.other_user.profile.phone_number }}?text={{ match.whatsapp_msg|urlencode }}" target="_blank" rel="noopener noreferrer"
+           onclick="const revealBtn = this.nextElementSibling; window.addEventListener('focus', function handler() { revealBtn.classList.remove('hidden'); window.removeEventListener('focus', handler); }, {once:true});"
            class="whatsapp-btn flex items-center justify-center gap-2 w-full py-3 bg-green-500 hover:bg-green-600 text-white font-semibold text-sm rounded-xl transition-all duration-200 shadow-md shadow-green-500/25">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.917.918l4.458-1.495A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.37 0-4.567-.804-6.307-2.156l-.44-.349-3.07 1.029 1.029-3.07-.349-.44A9.96 9.96 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
           Connect on WhatsApp
         </a>
+        <button onclick="
+                  this.classList.add('reveal-anim'); 
+                  setTimeout(() => { 
+                    this.innerHTML = '+91 {{ match.other_user.profile.phone_number }}'; 
+                    this.classList.remove('reveal-anim', 'bg-brand-50', 'text-brand-700', 'border-brand-200', 'hover:bg-brand-100');
+                    this.classList.add('bg-gray-100', 'text-gray-900', 'border-gray-200', 'cursor-default');
+                    this.onclick = null;
+                  }, 300);"
+                class="hidden mt-3 w-full py-2.5 bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 font-semibold text-sm rounded-xl transition-all duration-300 overflow-hidden relative">
+          Reveal their contact
+        </button>
       </div>
     </div>
     {% endfor %}
