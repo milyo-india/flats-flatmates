@@ -1,0 +1,180 @@
+/* Card entrance animation */
+.card-animate {
+  animation: cardSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* HTMX swap out animation */
+.htmx-swapping {
+  opacity: 0;
+  transform: translateX(-100px) rotate(-5deg);
+  transition: all 0.3s cubic-bezier(0.55, 0, 1, 0.45);
+}
+
+/* Lifestyle chip styling */
+.lifestyle-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #4338CA;
+  background: linear-gradient(135deg, #EEF2FF, #E0E7FF);
+  border: 1px solid #C7D2FE;
+  border-radius: 9999px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.lifestyle-chip:hover {
+  background: linear-gradient(135deg, #E0E7FF, #C7D2FE);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(67, 56, 202, 0.15);
+}
+
+/* Smooth page transitions */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Focus styles for accessibility */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #4338CA;
+  border-color: #4338CA;
+}
+
+button:focus-visible {
+  outline: 2px solid #4338CA;
+  outline-offset: 2px;
+}
+
+/* Navbar glass effect */
+.nav-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Section divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #E5E7EB, transparent);
+  margin: 1.5rem 0;
+}
+
+/* Match card hover */
+.match-card {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.match-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(67, 56, 202, 0.15);
+}
+
+/* Animate bounce for match modal */
+@keyframes celebrateBounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-20px); }
+  60% { transform: translateY(-10px); }
+}
+
+.animate-celebrate {
+  animation: celebrateBounce 1s ease;
+}
+
+/* Form section styling */
+.form-section {
+  padding: 1.5rem 0;
+}
+
+.form-section + .form-section {
+  border-top: 1px solid #F3F4F6;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+/* Profile avatar dropdown */
+.profile-dropdown {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profile-trigger:focus-within .profile-dropdown,
+.profile-trigger:hover .profile-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Sort pill active state transition */
+.sort-pill {
+  transition: all 0.2s ease;
+}
+
+/* File upload area */
+.file-upload-area {
+  border: 2px dashed #C7D2FE;
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.file-upload-area:hover {
+  border-color: #4338CA;
+  background: #EEF2FF;
+}
+
+/* WhatsApp button pulse */
+.whatsapp-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.whatsapp-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+
+.whatsapp-btn:hover::after {
+  transform: translateX(100%);
+}

@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% block title %}{% if is_edit %}Edit Your Listing{% else %}List a Room{% endif %} | Flats & Flatmates{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 sm:px-6">
+
+  <!-- Page Header -->
+  <div class="text-center mb-8">
+    <h1 class="font-display font-bold text-3xl sm:text-4xl text-brand-950 mb-2">{% if is_edit %}Edit Your Listing{% else %}List Your Room{% endif %}</h1>
+    <p class="text-gray-500 text-base">{% if is_edit %}Update the details of your property.{% else %}Share your space and find the perfect flatmate.{% endif %}</p>
+  </div>
+
+  <!-- Form Card -->
+  <div class="bg-white rounded-2xl shadow-lg shadow-gray-200/50 border border-gray-100 overflow-hidden">
+    <form method="post" enctype="multipart/form-data" class="divide-y divide-gray-100">
+      {% csrf_token %}
+
+      <!-- Section 1: Room Details -->
+      <div class="p-6 sm:p-8">
+        <h2 class="font-display font-semibold text-lg text-brand-950 mb-1 flex items-center gap-2">
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-brand-50 text-brand-700 text-sm font-bold">1</span>
+          Room Details
+        </h2>
+        <p class="text-gray-400 text-sm mb-5 ml-9">Describe your room to attract the right flatmate.</p>
+
+        <div class="space-y-5 ml-9">
+          <!-- Title -->
+          <div>
+            <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.title.label }}</label>
+            {{ form.title }}
+            {% if form.title.errors %}<p class="text-red-500 text-xs mt-1">{{ form.title.errors.0 }}</p>{% endif %}
+            {% if form.title.help_text %}<p class="text-gray-400 text-xs mt-1">{{ form.title.help_text }}</p>{% endif %}
+          </div>
+
+          <!-- Description -->
+          <div>
+            <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.description.label }}</label>
+            {{ form.description }}
+            {% if form.description.errors %}<p class="text-red-500 text-xs mt-1">{{ form.description.errors.0 }}</p>{% endif %}
+            {% if form.description.help_text %}<p class="text-gray-400 text-xs mt-1">{{ form.description.help_text }}</p>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Pricing -->
+      <div class="p-6 sm:p-8">
+        <h2 class="font-display font-semibold text-lg text-brand-950 mb-1 flex items-center gap-2">
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-brand-50 text-brand-700 text-sm font-bold">2</span>
+          Pricing
+        </h2>
+        <p class="text-gray-400 text-sm mb-5 ml-9">Set your monthly rent and security deposit.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 ml-9">
+          <!-- Rent -->
+          <div>
+            <label for="{{ form.rent.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.rent.label }}</label>
+            {{ form.rent }}
+            {% if form.rent.errors %}<p class="text-red-500 text-xs mt-1">{{ form.rent.errors.0 }}</p>{% endif %}
+            {% if form.rent.help_text %}<p class="text-gray-400 text-xs mt-1">{{ form.rent.help_text }}</p>{% endif %}
+          </div>
+
+          <!-- Security Deposit -->
+          <div>
+            <label for="{{ form.security_deposit.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.security_deposit.label }}</label>
+            {{ form.security_deposit }}
+            {% if form.security_deposit.errors %}<p class="text-red-500 text-xs mt-1">{{ form.security_deposit.errors.0 }}</p>{% endif %}
+            {% if form.security_deposit.help_text %}<p class="text-gray-400 text-xs mt-1">{{ form.security_deposit.help_text }}</p>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Location -->
+      <div class="p-6 sm:p-8">
+        <h2 class="font-display font-semibold text-lg text-brand-950 mb-1 flex items-center gap-2">
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-brand-50 text-brand-700 text-sm font-bold">3</span>
+          Location
+        </h2>
+        <p class="text-gray-400 text-sm mb-5 ml-9">Help flatmates find your room on the map.</p>
+
+        <div class="space-y-5 ml-9">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <!-- Locality -->
+            <div>
+              <label for="{{ form.locality.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.locality.label }}</label>
+              {{ form.locality }}
+              {% if form.locality.errors %}<p class="text-red-500 text-xs mt-1">{{ form.locality.errors.0 }}</p>{% endif %}
+            </div>
+
+            <!-- City -->
+            <div>
+              <label for="{{ form.city.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.city.label }}</label>
+              {{ form.city }}
+              {% if form.city.errors %}<p class="text-red-500 text-xs mt-1">{{ form.city.errors.0 }}</p>{% endif %}
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <!-- Latitude -->
+            <div>
+              <label for="{{ form.latitude.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.latitude.label }}</label>
+              {{ form.latitude }}
+              {% if form.latitude.errors %}<p class="text-red-500 text-xs mt-1">{{ form.latitude.errors.0 }}</p>{% endif %}
+              {% if form.latitude.help_text %}<p class="text-gray-400 text-xs mt-1">{{ form.latitude.help_text }}</p>{% endif %}
+            </div>
+
+            <!-- Longitude -->
+            <div>
+              <label for="{{ form.longitude.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.longitude.label }}</label>
+              {{ form.longitude }}
+              {% if form.longitude.errors %}<p class="text-red-500 text-xs mt-1">{{ form.longitude.errors.0 }}</p>{% endif %}
+              {% if form.longitude.help_text %}<p class="text-gray-400 text-xs mt-1">{{ form.longitude.help_text }}</p>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Availability -->
+      <div class="p-6 sm:p-8">
+        <h2 class="font-display font-semibold text-lg text-brand-950 mb-1 flex items-center gap-2">
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-brand-50 text-brand-700 text-sm font-bold">4</span>
+          Availability
+        </h2>
+        <p class="text-gray-400 text-sm mb-5 ml-9">When is the room available for move-in?</p>
+
+        <div class="ml-9">
+          <div class="max-w-xs">
+            <label for="{{ form.available_from.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.available_from.label }}</label>
+            {{ form.available_from }}
+            {% if form.available_from.errors %}<p class="text-red-500 text-xs mt-1">{{ form.available_from.errors.0 }}</p>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 5: Room Photo -->
+      <div class="p-6 sm:p-8">
+        <h2 class="font-display font-semibold text-lg text-brand-950 mb-1 flex items-center gap-2">
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-brand-50 text-brand-700 text-sm font-bold">5</span>
+          Room Photo
+        </h2>
+        <p class="text-gray-400 text-sm mb-5 ml-9">A great photo makes your listing stand out.</p>
+
+        <div class="space-y-5 ml-9">
+          <!-- Room Image Upload -->
+          <div>
+            <label for="{{ form.room_image.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.room_image.label }}</label>
+            <div class="file-upload-area">
+              {{ form.room_image }}
+              <p class="text-gray-400 text-xs mt-2">Upload a photo of your room (JPG, PNG)</p>
+            </div>
+            {% if form.room_image.errors %}<p class="text-red-500 text-xs mt-1">{{ form.room_image.errors.0 }}</p>{% endif %}
+          </div>
+
+          <!-- Image URL Fallback -->
+          <div>
+            <label for="{{ form.image_url.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.image_url.label }}</label>
+            {{ form.image_url }}
+            {% if form.image_url.errors %}<p class="text-red-500 text-xs mt-1">{{ form.image_url.errors.0 }}</p>{% endif %}
+            {% if form.image_url.help_text %}<p class="text-gray-400 text-xs mt-1">{{ form.image_url.help_text }}</p>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 6: Ideal Flatmate Preferences -->
+      <div class="p-6 sm:p-8">
+        <h2 class="font-display font-semibold text-lg text-brand-950 mb-1 flex items-center gap-2">
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-brand-50 text-brand-700 text-sm font-bold">6</span>
+          Ideal Flatmate Preferences
+        </h2>
+        <p class="text-gray-400 text-sm mb-5 ml-9">Help us match you with compatible flatmates.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 ml-9">
+          <!-- Diet Preference -->
+          <div>
+            <label for="{{ form.pref_diet.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.pref_diet.label }}</label>
+            {{ form.pref_diet }}
+            {% if form.pref_diet.errors %}<p class="text-red-500 text-xs mt-1">{{ form.pref_diet.errors.0 }}</p>{% endif %}
+          </div>
+
+          <!-- Schedule Preference -->
+          <div>
+            <label for="{{ form.pref_schedule.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.pref_schedule.label }}</label>
+            {{ form.pref_schedule }}
+            {% if form.pref_schedule.errors %}<p class="text-red-500 text-xs mt-1">{{ form.pref_schedule.errors.0 }}</p>{% endif %}
+          </div>
+
+          <!-- Pets Preference -->
+          <div>
+            <label for="{{ form.pref_pets.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.pref_pets.label }}</label>
+            {{ form.pref_pets }}
+            {% if form.pref_pets.errors %}<p class="text-red-500 text-xs mt-1">{{ form.pref_pets.errors.0 }}</p>{% endif %}
+          </div>
+
+          <!-- Smoking Preference -->
+          <div>
+            <label for="{{ form.pref_smoking.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.pref_smoking.label }}</label>
+            {{ form.pref_smoking }}
+            {% if form.pref_smoking.errors %}<p class="text-red-500 text-xs mt-1">{{ form.pref_smoking.errors.0 }}</p>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="p-6 sm:p-8 bg-surface-50">
+        <button type="submit"
+                class="w-full py-3.5 bg-brand-700 hover:bg-brand-800 text-white font-semibold rounded-xl transition-all duration-200 shadow-md shadow-brand-700/25 flex items-center justify-center gap-2 text-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+          </svg>
+          {% if is_edit %}Save Changes{% else %}Publish Listing{% endif %}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

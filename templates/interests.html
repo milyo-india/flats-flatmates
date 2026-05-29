@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Interests | Flats & Flatmates{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto px-4 sm:px-6 h-[calc(100vh-8rem)] flex flex-col">
+
+  <!-- Header -->
+  <div class="mb-6 shrink-0 text-center">
+    <h1 class="font-display font-bold text-3xl text-brand-950 mb-1">Interested Profiles</h1>
+    <p class="text-sm text-gray-500">People who liked your listings</p>
+  </div>
+
+  <!-- Swipe Container -->
+  <div class="flex-1 relative pb-10">
+    <div id="swipe-container" class="absolute inset-0">
+      {% if current_match %}
+        {% include 'components/profile_card.html' with match=current_match %}
+      {% else %}
+        {% include 'components/empty_state.html' with is_interests=True %}
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

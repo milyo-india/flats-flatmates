@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Log In | Flats & Flatmates{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center px-4 sm:px-6">
+  <div class="w-full max-w-md">
+
+    <!-- Branding -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-14 h-14 bg-brand-700 rounded-2xl mb-4 shadow-lg shadow-brand-700/25">
+        <span class="font-display font-bold text-xl text-white">F&F</span>
+      </div>
+      <h1 class="font-display font-bold text-2xl text-brand-950 mb-1">Welcome Back</h1>
+      <p class="text-gray-500 text-sm">Log in to continue your search.</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl shadow-lg shadow-gray-200/50 border border-gray-100 p-8">
+      <form method="post">
+        {% csrf_token %}
+
+        <!-- Non-field errors -->
+        {% if form.non_field_errors %}
+        <div class="mb-5 p-3 bg-red-50 border border-red-200 rounded-xl">
+          {% for error in form.non_field_errors %}
+          <p class="text-red-600 text-sm">{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if form.errors and not form.non_field_errors %}
+        <div class="mb-5 p-3 bg-red-50 border border-red-200 rounded-xl">
+          <p class="text-red-600 text-sm">Invalid username or password. Please try again.</p>
+        </div>
+        {% endif %}
+
+        <div class="space-y-5">
+          <!-- Username -->
+          <div>
+            <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">Username</label>
+            {{ form.username }}
+            {% if form.username.errors %}<p class="text-red-500 text-xs mt-1">{{ form.username.errors.0 }}</p>{% endif %}
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">Password</label>
+            {{ form.password }}
+            {% if form.password.errors %}<p class="text-red-500 text-xs mt-1">{{ form.password.errors.0 }}</p>{% endif %}
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit"
+                class="w-full mt-6 py-3.5 bg-brand-700 hover:bg-brand-800 text-white font-semibold rounded-xl transition-all duration-200 shadow-md shadow-brand-700/25 text-sm">
+          Log In
+        </button>
+      </form>
+
+      <!-- Sign up link -->
+      <p class="text-center text-sm text-gray-500 mt-6">
+        Don't have an account?
+        <a href="{% url 'platform:signup' %}" class="font-semibold text-brand-700 hover:text-brand-800 transition-colors">Sign up</a>
+      </p>
+    </div>
+
+    <!-- Quick test login hint -->
+    <div class="mt-4 p-3 bg-brand-50 border border-brand-100 rounded-xl text-center">
+      <p class="text-xs text-brand-700">
+        <span class="font-semibold">Demo login:</span> testuser / testpass123
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

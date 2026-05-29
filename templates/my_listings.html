@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}My Listings | Flats & Flatmates{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6">
+
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="font-display font-bold text-3xl text-brand-950 mb-2">My Listings</h1>
+    <p class="text-gray-500">Manage properties you have listed for rent.</p>
+  </div>
+
+  {% if listings %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {% for listing in listings %}
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+        <div class="h-48 shrink-0 relative">
+          <img src="{{ listing.display_image_url }}" alt="{{ listing.title }}" class="w-full h-full object-cover">
+          <div class="absolute top-3 left-3 px-2 py-1 bg-white/90 backdrop-blur rounded text-xs font-bold text-brand-900">
+            ₹{{ listing.rent|floatformat:0 }}/mo
+          </div>
+        </div>
+        <div class="p-5 flex-1 flex flex-col">
+          <h2 class="font-display font-bold text-lg text-brand-950 mb-1 line-clamp-1">{{ listing.title }}</h2>
+          <p class="text-sm text-gray-500 flex items-center gap-1 mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+            {{ listing.locality }}, {{ listing.city }}
+          </p>
+          
+          <div class="mt-auto flex gap-3">
+            <a href="{% url 'platform:edit_listing' listing.id %}" class="flex-1 text-center px-4 py-2 bg-brand-50 hover:bg-brand-100 text-brand-700 font-medium text-sm rounded-lg transition-colors">
+              Edit Listing
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
+      <div class="text-5xl mb-4">🏠</div>
+      <h3 class="font-display font-bold text-xl text-brand-950 mb-2">No listings yet</h3>
+      <p class="text-gray-500 mb-6">You haven't posted any rooms for rent yet.</p>
+      <a href="{% url 'platform:create_listing' %}" class="inline-flex items-center gap-2 px-6 py-2.5 bg-brand-700 hover:bg-brand-800 text-white font-semibold rounded-xl transition-colors">
+        List Your Room
+      </a>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

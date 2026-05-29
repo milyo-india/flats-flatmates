@@ -1,0 +1,98 @@
+<div id="listing-card-{{ listing.id }}" class="card-animate">
+  <div class="bg-white rounded-2xl shadow-lg shadow-gray-200/50 overflow-hidden border border-gray-100">
+
+    <!-- Image Container -->
+    <div class="relative aspect-[16/10] overflow-hidden">
+      <img src="{{ listing.display_image_url }}" alt="{{ listing.title }}" class="w-full h-full object-cover">
+
+      <!-- Gradient overlay -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+      <!-- Top badges row -->
+      <div class="absolute top-4 left-4 right-4 flex justify-between items-start">
+        <!-- Rent badge -->
+        <span class="px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-xl text-sm font-semibold text-brand-950 shadow-sm">
+          ₹{{ listing.rent|floatformat:0 }}/mo
+        </span>
+
+        <!-- Verified badge -->
+        {% if listing.posted_by.profile.is_verified %}
+        <span class="px-3 py-1.5 bg-success-600/90 backdrop-blur-sm rounded-xl text-xs font-semibold text-white flex items-center gap-1 shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.403 12.652a3 3 0 010-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.06l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>
+          Verified
+        </span>
+        {% endif %}
+      </div>
+
+      <!-- Bottom info on image -->
+      <div class="absolute bottom-4 left-4 right-4">
+        <h3 class="text-white font-display font-bold text-xl leading-tight">{{ listing.title }}</h3>
+        <p class="text-white/80 text-sm mt-1 flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+          {{ listing.locality }}, {{ listing.city }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Content below image -->
+    <div class="p-5">
+      <!-- Flatmate profile mini-card -->
+      <div class="flex items-center gap-3 mb-4">
+        <img src="{{ listing.posted_by.profile.profile_picture_url }}" alt="{{ listing.posted_by.get_full_name }}" class="w-12 h-12 rounded-full object-cover ring-2 ring-brand-100">
+        <div>
+          <p class="font-semibold text-brand-950">{{ listing.posted_by.get_full_name }}</p>
+          <p class="text-xs text-gray-500">{{ listing.posted_by.profile.age }} yrs · {{ listing.posted_by.profile.get_gender_display }}</p>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ listing.posted_by.profile.bio|truncatechars:120 }}</p>
+
+      <!-- Lifestyle chips -->
+      <div class="flex flex-wrap gap-2 mb-4">
+        {% if listing.posted_by.profile.diet %}
+        <span class="lifestyle-chip">{% if listing.posted_by.profile.diet == 'veg' %}🟢{% elif listing.posted_by.profile.diet == 'vegan' %}🌱{% else %}🍖{% endif %} {{ listing.posted_by.profile.get_diet_display }}</span>
+        {% endif %}
+        {% if listing.posted_by.profile.schedule %}
+        <span class="lifestyle-chip">{% if listing.posted_by.profile.schedule == 'early_bird' %}🌅{% else %}🦉{% endif %} {{ listing.posted_by.profile.get_schedule_display }}</span>
+        {% endif %}
+        {% if listing.posted_by.profile.pets %}
+        <span class="lifestyle-chip">{% if listing.posted_by.profile.pets == 'has_pets' %}🐾{% elif listing.posted_by.profile.pets == 'pet_friendly' %}🐶{% else %}🚫{% endif %} {{ listing.posted_by.profile.get_pets_display }}</span>
+        {% endif %}
+        {% if listing.posted_by.profile.smoking %}
+        <span class="lifestyle-chip">{% if listing.posted_by.profile.smoking == 'non_smoker' %}🚭{% elif listing.posted_by.profile.smoking == 'smoker' %}🚬{% else %}💨{% endif %} {{ listing.posted_by.profile.get_smoking_display }}</span>
+        {% endif %}
+      </div>
+
+      <!-- Deposit info -->
+      <div class="flex items-center justify-between text-xs text-gray-500 mb-5 px-1">
+        <span>Deposit: ₹{{ listing.security_deposit|floatformat:0 }}</span>
+        <span>Available: {{ listing.available_from|date:'M d, Y' }}</span>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex gap-3">
+        <button
+          hx-post="{% url 'platform:swipe' listing.id %}"
+          hx-vals='{"action": "PASS", "current_sort": "{{ current_sort }}"}'
+          hx-target="#listing-card-{{ listing.id }}"
+          hx-swap="outerHTML swap:300ms"
+          class="swipe-pass-btn flex-1 py-3.5 rounded-xl border-2 border-gray-200 text-gray-500 font-semibold text-sm hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 flex items-center justify-center gap-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+          Pass
+        </button>
+        <button
+          hx-post="{% url 'platform:swipe' listing.id %}"
+          hx-vals='{"action": "LIKE", "current_sort": "{{ current_sort }}"}'
+          hx-target="#listing-card-{{ listing.id }}"
+          hx-swap="outerHTML swap:300ms"
+          class="swipe-connect-btn flex-1 py-3.5 rounded-xl bg-brand-700 text-white font-semibold text-sm hover:bg-brand-800 transition-all duration-200 shadow-md shadow-brand-700/25 flex items-center justify-center gap-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
+          Connect
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

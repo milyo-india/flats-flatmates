@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block title %}Complete Profile | Flats & Flatmates{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 sm:px-6">
+
+  <!-- Page Header -->
+  <div class="text-center mb-8">
+    <h1 class="font-display font-bold text-3xl sm:text-4xl text-brand-950 mb-2">Complete Your Profile</h1>
+    <p class="text-gray-500 text-base">Help flatmates get to know you better.</p>
+  </div>
+
+  <!-- Form Card -->
+  <div class="bg-white rounded-2xl shadow-lg shadow-gray-200/50 border border-gray-100 overflow-hidden">
+    <form method="post" enctype="multipart/form-data" class="divide-y divide-gray-100">
+      {% csrf_token %}
+
+      <!-- Non-field errors -->
+      {% if form.non_field_errors %}
+      <div class="mx-6 mt-6 p-3 bg-red-50 border border-red-200 rounded-xl">
+        {% for error in form.non_field_errors %}
+        <p class="text-red-600 text-sm">{{ error }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Section 1: Photo & Basic Info -->
+      <div class="p-6 sm:p-8">
+        <h2 class="font-display font-semibold text-lg text-brand-950 mb-1 flex items-center gap-2">
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-brand-50 text-brand-700 text-sm font-bold">1</span>
+          Photo & Basic Info
+        </h2>
+        <p class="text-gray-400 text-sm mb-5 ml-9">Your profile picture and basic details.</p>
+
+        <div class="space-y-5 ml-9">
+          <!-- Profile Picture -->
+          <div>
+            <label for="{{ form.profile_picture.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.profile_picture.label }}</label>
+            {{ form.profile_picture }}
+            {% if form.profile_picture.errors %}<p class="text-red-500 text-xs mt-1">{{ form.profile_picture.errors.0 }}</p>{% endif %}
+            <p class="text-gray-400 text-xs mt-2">Upload a clear photo of yourself (JPG, PNG)</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <!-- Age -->
+            <div>
+              <label for="{{ form.age.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.age.label }}</label>
+              {{ form.age }}
+              {% if form.age.errors %}<p class="text-red-500 text-xs mt-1">{{ form.age.errors.0 }}</p>{% endif %}
+            </div>
+
+            <!-- Gender -->
+            <div>
+              <label for="{{ form.gender.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.gender.label }}</label>
+              {{ form.gender }}
+              {% if form.gender.errors %}<p class="text-red-500 text-xs mt-1">{{ form.gender.errors.0 }}</p>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: About You -->
+      <div class="p-6 sm:p-8">
+        <h2 class="font-display font-semibold text-lg text-brand-950 mb-1 flex items-center gap-2">
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-brand-50 text-brand-700 text-sm font-bold">2</span>
+          About You
+        </h2>
+        <p class="text-gray-400 text-sm mb-5 ml-9">A short bio helps flatmates connect with you.</p>
+
+        <div class="ml-9">
+          <label for="{{ form.bio.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.bio.label }}</label>
+          {{ form.bio }}
+          {% if form.bio.errors %}<p class="text-red-500 text-xs mt-1">{{ form.bio.errors.0 }}</p>{% endif %}
+          <p class="text-gray-400 text-xs mt-1">Max 300 characters</p>
+        </div>
+      </div>
+
+      <!-- Section 3: Your Lifestyle -->
+      <div class="p-6 sm:p-8">
+        <h2 class="font-display font-semibold text-lg text-brand-950 mb-1 flex items-center gap-2">
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-brand-50 text-brand-700 text-sm font-bold">3</span>
+          Your Lifestyle
+        </h2>
+        <p class="text-gray-400 text-sm mb-5 ml-9">These tags help match you with compatible flatmates.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 ml-9">
+          <!-- Diet -->
+          <div>
+            <label for="{{ form.diet.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.diet.label }}</label>
+            {{ form.diet }}
+            {% if form.diet.errors %}<p class="text-red-500 text-xs mt-1">{{ form.diet.errors.0 }}</p>{% endif %}
+          </div>
+
+          <!-- Schedule -->
+          <div>
+            <label for="{{ form.schedule.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.schedule.label }}</label>
+            {{ form.schedule }}
+            {% if form.schedule.errors %}<p class="text-red-500 text-xs mt-1">{{ form.schedule.errors.0 }}</p>{% endif %}
+          </div>
+
+          <!-- Pets -->
+          <div>
+            <label for="{{ form.pets.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.pets.label }}</label>
+            {{ form.pets }}
+            {% if form.pets.errors %}<p class="text-red-500 text-xs mt-1">{{ form.pets.errors.0 }}</p>{% endif %}
+          </div>
+
+          <!-- Smoking -->
+          <div>
+            <label for="{{ form.smoking.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.smoking.label }}</label>
+            {{ form.smoking }}
+            {% if form.smoking.errors %}<p class="text-red-500 text-xs mt-1">{{ form.smoking.errors.0 }}</p>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Contact -->
+      <div class="p-6 sm:p-8">
+        <h2 class="font-display font-semibold text-lg text-brand-950 mb-1 flex items-center gap-2">
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-brand-50 text-brand-700 text-sm font-bold">4</span>
+          Contact
+        </h2>
+        <p class="text-gray-400 text-sm mb-5 ml-9">Used for WhatsApp connections when you match.</p>
+
+        <div class="ml-9 max-w-sm">
+          <label for="{{ form.phone_number.id_for_label }}" class="block text-sm font-medium text-brand-950 mb-1.5">{{ form.phone_number.label }}</label>
+          {{ form.phone_number }}
+          {% if form.phone_number.errors %}<p class="text-red-500 text-xs mt-1">{{ form.phone_number.errors.0 }}</p>{% endif %}
+          <p class="text-gray-400 text-xs mt-1.5 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+            This number will be shared via WhatsApp link when matched
+          </p>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="p-6 sm:p-8 bg-surface-50">
+        <button type="submit"
+                class="w-full py-3.5 bg-brand-700 hover:bg-brand-800 text-white font-semibold rounded-xl transition-all duration-200 shadow-md shadow-brand-700/25 flex items-center justify-center gap-2 text-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+          </svg>
+          Save Profile
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

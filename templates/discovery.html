@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Discover | Flats & Flatmates{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 sm:px-6">
+
+  <!-- Page Header -->
+  <div class="text-center mb-8">
+    <h1 class="font-display font-bold text-3xl sm:text-4xl text-brand-950 mb-2">Find Your Next Home</h1>
+    <p class="text-gray-500 text-base">Swipe through verified listings. Connect with compatible flatmates.</p>
+  </div>
+
+  <!-- Sort Bar -->
+  <div class="flex flex-wrap items-center justify-center gap-2 mb-8">
+    <a href="?sort=relevance"
+       class="sort-pill inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border
+              {% if current_sort == 'relevance' or not current_sort %}bg-brand-700 text-white border-brand-700 shadow-md shadow-brand-700/25{% else %}bg-white text-gray-600 border-gray-200 hover:bg-brand-50 hover:border-brand-200{% endif %}">
+      ✨ Relevance
+    </a>
+    <a href="?sort=rent_asc"
+       class="sort-pill inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border
+              {% if current_sort == 'rent_asc' %}bg-brand-700 text-white border-brand-700 shadow-md shadow-brand-700/25{% else %}bg-white text-gray-600 border-gray-200 hover:bg-brand-50 hover:border-brand-200{% endif %}">
+      💰 Rent: Low to High
+    </a>
+    <a href="?sort=distance"
+       class="sort-pill inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border
+              {% if current_sort == 'distance' %}bg-brand-700 text-white border-brand-700 shadow-md shadow-brand-700/25{% else %}bg-white text-gray-600 border-gray-200 hover:bg-brand-50 hover:border-brand-200{% endif %}">
+      📍 Distance: Nearest
+    </a>
+  </div>
+
+  <!-- Card Container -->
+  <div class="max-w-lg mx-auto">
+    {% if current_listing %}
+      {% include 'components/house_card.html' with listing=current_listing %}
+    {% else %}
+      {% include 'components/empty_state.html' %}
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

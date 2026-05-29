@@ -1,0 +1,97 @@
+<div id="profile-card" class="absolute inset-0 bg-white rounded-3xl shadow-xl shadow-brand-200/50 border border-brand-100 overflow-hidden flex flex-col card-animate">
+
+  <!-- Profile Image -->
+  <div class="relative h-2/3 shrink-0 bg-gray-100">
+    <img src="{{ match.searcher.profile.profile_picture_url }}" alt="{{ match.searcher.get_full_name }}" class="w-full h-full object-cover">
+    
+    <!-- Gradient Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+    <!-- Verified Badge -->
+    {% if match.searcher.profile.is_verified %}
+    <div class="absolute top-4 right-4">
+      <span class="px-3 py-1.5 bg-success-600/90 backdrop-blur-md rounded-xl text-xs font-semibold text-white flex items-center gap-1.5 shadow-sm border border-success-400/30">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.403 12.652a3 3 0 010-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.06l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg>
+        Verified
+      </span>
+    </div>
+    {% endif %}
+
+    <!-- Info Overlay -->
+    <div class="absolute bottom-0 inset-x-0 p-6 text-white">
+      <h2 class="font-display font-bold text-3xl mb-1 drop-shadow-md">
+        {{ match.searcher.get_full_name }}
+        {% if match.searcher.profile.age %}<span class="text-2xl font-medium text-white/90">, {{ match.searcher.profile.age }}</span>{% endif %}
+      </h2>
+      <p class="text-sm font-medium text-white/90 drop-shadow flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-brand-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+        </svg>
+        {{ match.searcher.profile.get_gender_display }}
+      </p>
+      <!-- Listing reference -->
+      <div class="mt-2 text-xs text-brand-100 bg-brand-900/60 px-2 py-1 rounded inline-block backdrop-blur-sm border border-brand-500/30">
+        Interested in: {{ match.listing.title }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Details Scrollable Area -->
+  <div class="flex-1 overflow-y-auto p-6 bg-white">
+    
+    <!-- Bio -->
+    <div class="mb-5">
+      <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">About me</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">{{ match.searcher.profile.bio }}</p>
+    </div>
+
+    <!-- Lifestyle -->
+    <div>
+      <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Lifestyle</h3>
+      <div class="flex flex-wrap gap-2">
+        {% if match.searcher.profile.diet %}
+        <span class="lifestyle-chip">{% if match.searcher.profile.diet == 'veg' %}🟢{% elif match.searcher.profile.diet == 'vegan' %}🌱{% else %}🍖{% endif %} {{ match.searcher.profile.get_diet_display }}</span>
+        {% endif %}
+        {% if match.searcher.profile.schedule %}
+        <span class="lifestyle-chip">{% if match.searcher.profile.schedule == 'early_bird' %}🌅{% else %}🦉{% endif %} {{ match.searcher.profile.get_schedule_display }}</span>
+        {% endif %}
+        {% if match.searcher.profile.pets %}
+        <span class="lifestyle-chip">{% if match.searcher.profile.pets == 'has_pets' %}🐾{% elif match.searcher.profile.pets == 'pet_friendly' %}🐶{% else %}🚫{% endif %} {{ match.searcher.profile.get_pets_display }}</span>
+        {% endif %}
+        {% if match.searcher.profile.smoking %}
+        <span class="lifestyle-chip">{% if match.searcher.profile.smoking == 'non_smoker' %}🚭{% elif match.searcher.profile.smoking == 'smoker' %}🚬{% else %}💨{% endif %} {{ match.searcher.profile.get_smoking_display }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Action Bar -->
+  <div class="absolute bottom-6 inset-x-6 flex justify-center gap-6 z-10">
+    <!-- Pass Form -->
+    <form hx-post="{% url 'platform:interest_action' match.id %}" 
+          hx-target="#swipe-container" 
+          hx-swap="innerHTML transition:true"
+          onsubmit="document.getElementById('profile-card').classList.add('htmx-swapping')">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="PASS">
+      <button type="submit" 
+              class="swipe-pass-btn w-16 h-16 rounded-full bg-white text-red-500 shadow-xl shadow-red-500/20 border border-gray-100 flex items-center justify-center hover:bg-red-50 hover:scale-110 hover:shadow-2xl hover:shadow-red-500/30 transition-all duration-200 focus:outline-none group">
+        <svg class="w-8 h-8 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </form>
+
+    <!-- Accept Form -->
+    <form hx-post="{% url 'platform:interest_action' match.id %}" 
+          hx-target="#swipe-container" 
+          hx-swap="innerHTML transition:true"
+          onsubmit="document.getElementById('profile-card').classList.add('htmx-swapping')">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="LIKE">
+      <button type="submit" 
+              class="swipe-connect-btn w-16 h-16 rounded-full bg-brand-500 text-white shadow-xl shadow-brand-500/30 border-2 border-brand-500 flex items-center justify-center hover:bg-brand-600 hover:scale-110 hover:shadow-2xl hover:shadow-brand-500/40 transition-all duration-200 focus:outline-none group">
+        <svg class="w-8 h-8 group-hover:-translate-y-1 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"/></svg>
+      </button>
+    </form>
+  </div>
+</div>
