@@ -299,32 +299,74 @@
       event.detail.headers['X-CSRFToken'] = getCookie('csrftoken');
     });
 
-    // Mobile swipe support
+    // Tinder-like mobile swipe support with visual feedback
     let touchstartX = 0;
-    let touchendX = 0;
+    let currentX = 0;
+    let isDragging = false;
+    let activeCard = null;
 
     document.addEventListener('touchstart', e => {
+      // Only attach to the main card being displayed
+      const card = e.target.closest('.card-animate');
+      if (!card) return;
+      
+      activeCard = card;
       touchstartX = e.changedTouches[0].screenX;
-    }, { passive: true });
+      isDragging = true;
+      activeCard.style.transition = 'none'; // Disable transition during drag
+    }, {passive: true});
+
+    document.addEventListener('touchmove', e => {
+      if (!isDragging || !activeCard) return;
+      
+      currentX = e.changedTouches[0].screenX;
+      const deltaX = currentX - touchstartX;
+      
+      // Calculate rotation (max 15 degrees)
+      const rotate = deltaX * 0.05; 
+      activeCard.style.transform = `translateX(${deltaX}px) rotate(${rotate}deg)`;
+      
+      // Optional: change opacity based on drag distance
+      const opacity = 1 - Math.abs(deltaX) / 500;
+      activeCard.style.opacity = opacity;
+    }, {passive: true});
 
     document.addEventListener('touchend', e => {
-      touchendX = e.changedTouches[0].screenX;
-      handleSwipe();
-    }, { passive: true });
-
-    function handleSwipe() {
-      const swipeThreshold = 50;
-      if (touchendX < touchstartX - swipeThreshold) {
+      if (!isDragging || !activeCard) return;
+      isDragging = false;
+      
+      const deltaX = currentX - touchstartX;
+      const swipeThreshold = 100; // Drag 100px to trigger action
+      
+      activeCard.style.transition = 'transform 0.3s ease, opacity 0.3s ease'; // Re-enable transition
+      
+      if (deltaX < -swipeThreshold) {
         // Swiped left (Pass)
-        const passBtn = document.querySelector('.swipe-pass-btn');
-        if (passBtn) passBtn.click();
-      }
-      if (touchendX > touchstartX + swipeThreshold) {
+        activeCard.style.transform = `translateX(-150%) rotate(-20deg)`;
+        activeCard.style.opacity = '0';
+        setTimeout(() => {
+          const passBtn = activeCard.querySelector('.swipe-pass-btn') || document.querySelector('.swipe-pass-btn');
+          if (passBtn) passBtn.click();
+        }, 150);
+      } else if (deltaX > swipeThreshold) {
         // Swiped right (Like/Connect)
-        const connectBtn = document.querySelector('.swipe-connect-btn');
-        if (connectBtn) connectBtn.click();
+        activeCard.style.transform = `translateX(150%) rotate(20deg)`;
+        activeCard.style.opacity = '0';
+        setTimeout(() => {
+          const connectBtn = activeCard.querySelector('.swipe-connect-btn') || document.querySelector('.swipe-connect-btn');
+          if (connectBtn) connectBtn.click();
+        }, 150);
+      } else {
+        // Did not cross threshold, snap back
+        activeCard.style.transform = 'translateX(0) rotate(0)';
+        activeCard.style.opacity = '1';
       }
-    }
+      
+      // Reset
+      activeCard = null;
+      currentX = 0;
+      touchstartX = 0;
+    }, {passive: true});
   </script>
 </body>
 
